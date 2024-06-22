@@ -42,7 +42,3 @@ pip install -r requirements.txt
 python app.py
 '''
 Access the web application through the provided URL and interact with the prediction form.
-
-
-
- 
