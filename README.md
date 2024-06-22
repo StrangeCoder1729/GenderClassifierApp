@@ -28,17 +28,17 @@ GenderClassifierApp is a web application designed to predict gender based on fac
 
 ## Usage
 
-# Clone the repository
+### Clone the repository
 ```bash
 git clone <repository_url>
 ```
-# Install dependencies
+### Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
+### Run the Flask application
 ```bash
-# Run the Flask application
 python app.py
 '''
 
