@@ -1,7 +1,3 @@
-Got it! Here's the revised README with each command separated clearly as terminal commands:
-
----
-
 # GenderClassifierApp
 
 ## Overview
@@ -46,9 +42,9 @@ pip install -r requirements.txt
 python app.py
 '''
 
-```bash
-# Access the web application through the provided URL and interact with the prediction form.
-```
 
----
+# Access the web application through the provided URL and interact with the prediction form.
+
+
+
  
