@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gender Detection</title>
+
+    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='image/gender.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333; /* Dark gray text color */
+        }
+
+        .white-text {
+            color: white;
+        }
+        
+        nav {
+            background-color: #212121 !important; /* Dark background for navbar */
+        }
+        
+        nav a {
+            color: #fff !important; /* White text color for navbar links */
+        }
+        
+        nav .brand-logo {
+            color: #fff !important; /* White color for brand logo */
+        }
+        
+        .header.orange-text {
+            color: #333 !important; /* Dark gray color for headings */
+        }
+        
+        .input-field label {
+            color: #333; /* Dark gray color for input labels */
+        }
+        
+        .input-field input[type=text]:focus + label,
+        .input-field input[type=text]:valid + label {
+            color: #212121; /* Dark color for active/filled input labels */
+        }
+        
+        .btn-large, .btn-large:hover {
+            background-color: #212121; /* Dark background for buttons */
+            color: #fff; /* White text color for buttons */
+        }
+
+        .footer-para {
+            text-align: center;
+        }
+
+        .site-footer {
+            background-color: #26272b;
+            padding: 45px 0 20px;
+            font-size: 15px;
+            line-height: 24px;
+            color: #737373;
+        }
+        .site-footer hr {
+            border-top-color: #bbb;
+            opacity: 0.5;
+        }
+        .site-footer hr.small {
+            margin: 20px 0;
+        }
+        .site-footer h6 {
+            color: #fff;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-top: 5px;
+            letter-spacing: 2px;
+        }
+        .site-footer a {
+            color: #737373;
+        }
+        .site-footer a:hover {
+            color: #3366cc;
+            text-decoration: none;
+        }
+        .footer-links {
+            padding-left: 0;
+            list-style: none;
+        }
+        .footer-links li {
+            display: block;
+        }
+        .footer-links a {
+            color: #737373;
+        }
+        .footer-links a:active, .footer-links a:focus, .footer-links a:hover {
+            color: #3366cc;
+            text-decoration: none;
+        }
+        .footer-links.inline li {
+            display: inline-block;
+        }
+        .site-footer .social-icons {
+            text-align: right;
+        }
+        .site-footer .social-icons a {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            margin-left: 6px;
+            margin-right: 0;
+            border-radius: 100%;
+            background-color: #33353d;
+        }
+        .copyright-text {
+            margin: 0;
+        }
+        @media (max-width: 991px) {
+            .site-footer [class^=col-] {
+                margin-bottom: 30px;
+            }
+        }
+        @media (max-width: 767px) {
+            .site-footer {
+                padding-bottom: 0;
+            }
+            .site-footer .copyright-text, .site-footer .social-icons {
+                text-align: center;
+            }
+        }
+        @media (max-width: 767px) {
+            .social-icons li.title {
+                display: block;
+                margin-right: 0;
+                font-weight: 600;
+            }
+        }
+
+        .site-footer .row [class*="col-"] {
+            margin-bottom: 30px;
+        }
+
+        /* CSS for centering the audio player */
+        #audio-player-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="grey darken-4" role="navigation">  
+        <div class="nav-wrapper container">
+        </div>
+    </nav>
+    
+    <!-- Audio Player -->
+    <div id="audio-player-container" class="row center" style="margin-top: 10px; margin-bottom: -80px;">
+        <div class="col s12">
+            <audio controls id="audio-player">
+                <source src="{{ url_for('static', filename='facts.mp3') }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </div>
+
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <br><br>
+            <h1 class="header center orange-text">Gender Detection</h1>
+            <div class="row center">
+                <h5 class="header col s12">Predicting whether it is a Man or a Woman</h5>
+            </div>
+
+            <!-- Prediction Form -->
+            <div class="row">
+                <form id="prediction-form" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <label for="long_hair"><b></b></label>
+                            <select id="long_hair" name="long_hair" class="validate" required>
+                                <option value="" disabled selected>Long Hair</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4">
+                            <label for="forehead_width_cm"><b>Forehead Width (cm)</b></label>
+                            <input id="forehead_width_cm" name="forehead_width_cm" type="number" class="validate" step="any" required>
+                        </div>
+                        <div class="input-field col s4">
+                            <label for="forehead_height_cm"><b>Forehead Height (cm)</b></label>
+                            <input id="forehead_height_cm" name="forehead_height_cm" type="number" class="validate" step="any" required>
+                        </div>
+                        <div class="input-field col s4">
+                            <label for="nose_wide"><b></b></label>
+                            <select id="nose_wide" name="nose_wide" class="validate" required>
+                                <option value="" disabled selected>Nose Wide</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4">
+                            <label for="nose_long"><b></b></label>
+                            <select id="nose_long" name="nose_long" class="validate" required>
+                                <option value="" disabled selected>Nose Long</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4">
+                            <label for="lips_thin"><b></b></label>
+                            <select id="lips_thin" name="lips_thin" class="validate" required>
+                                <option value="" disabled selected>Lips Thin</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4">
+                            <label for="distance_nose_to_lip_long"><b></b></label>
+                            <select id="distance_nose_to_lip_long" name="distance_nose_to_lip_long" class="validate" required>
+                                <option value="" disabled selected>Distance Nose to Lip Long</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <button type="submit" class="btn-large waves-effect waves-light orange">Predict Gender</button>
+                        <button type="button" id="clear-button" class="btn-large waves-effect waves-light grey">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <br>
+            <p id="prediction-result" style="text-align: center; font-weight: bold;"></p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Materialize components
+            M.AutoInit();
+
+            // Handle form submission with AJAX
+            const form = document.getElementById('prediction-form');
+            const predictionResult = document.getElementById('prediction-result');
+            const clearButton = document.getElementById('clear-button');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+
+                fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    predictionResult.innerText = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
+            // Clear form fields and result
+            clearButton.addEventListener('click', function() {
+                form.reset();
+                predictionResult.innerText = '';
+            });
+        });
+    </script>
+</body>
+</html>
